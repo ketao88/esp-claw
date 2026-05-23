@@ -20,7 +20,7 @@ on:
 
 env:
   IDF_VERSION: v5.5.1
-  BOARD: esp32_S3_DevKitC_1_breadboard
+  CONFIG: esp32_S3_DevKitC_1_breadboard
 
 jobs:
   build:
@@ -38,9 +38,9 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
             -w /workspace/application/edge_agent \
-            -e CONFIG=${{ env.BOARD }} \
+            -e CONFIG=esp32_S3_DevKitC_1_breadboard \
             espressif/idf:${{ env.IDF_VERSION }} \
-            bash -c "idf.py gen-bmgr-config -c ./boards -b ${{ env.BOARD }} && idf.py build"
+            idf.py build
 
       - name: Extract combined binary
         run: |
@@ -50,7 +50,7 @@ jobs:
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
         with:
-          name: esp-claw-firmware-${{ env.BOARD }}
+          name: esp-claw-firmware-${{ env.CONFIG }}
           path: artifacts/
           retention-days: 30
 
