@@ -1,0 +1,13 @@
+idf_component_register(
+    SRCS
+        "src/cap_status_indicator.c"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        led_strip
+        freertos
+        esp_event
+        esp_wifi
+        wifi_manager
+        claw_core
+)

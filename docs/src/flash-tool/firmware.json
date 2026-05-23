@@ -1,0 +1,81 @@
+{
+  "esp32p4|rev1": {
+    "test_brand": {
+      "test_Board_p4": {
+        "features": [],
+        "description": "",
+        "merged_binary": {
+          "Serial JTAG": "/merged_binary/test_Board_p4__rev1__serial_jtag.bin"
+        },
+        "min_flash_size": 16,
+        "min_psram_size": 8,
+        "nvs_info": {
+          "start_addr": "0x9000",
+          "size": "0x6000"
+        }
+      }
+    }
+  },
+  "esp32p4|rev3": {
+    "test_brand": {
+      "test_Board_p4x": {
+        "features": [],
+        "description": "",
+        "merged_binary": {
+          "Serial JTAG": "/merged_binary/test_Board_p4x__rev3__serial_jtag.bin"
+        },
+        "min_flash_size": 16,
+        "min_psram_size": 8,
+        "nvs_info": {
+          "start_addr": "0x9000",
+          "size": "0x6000"
+        }
+      }
+    }
+  },
+  "esp32s3": {
+    "test_brand": {
+      "test_Board_s3": {
+        "features": [],
+        "description": "",
+        "merged_binary": {
+          "Serial JTAG": "/merged_binary/test_Board_s3__serial_jtag.bin"
+        },
+        "min_flash_size": 8,
+        "min_psram_size": 8,
+        "nvs_info": {
+          "start_addr": "0x9000",
+          "size": "0x6000"
+        }
+      },
+      "test_Board_s3_2": {
+        "features": [],
+        "description": "",
+        "merged_binary": {
+          "UART": "/merged_binary/test_Board_s3_2__uart.bin",
+          "Serial JTAG": "/merged_binary/test_Board_s3_2__serial_jtag.bin"
+        },
+        "min_flash_size": 8,
+        "min_psram_size": 8,
+        "nvs_info": {
+          "start_addr": "0x9000",
+          "size": "0x6000"
+        }
+      },
+      "test_Board_s3_3": {
+        "features": [],
+        "description": "",
+        "merged_binary": {
+          "UART": "/merged_binary/test_Board_s3_3__uart.bin",
+          "Serial JTAG": "/merged_binary/test_Board_s3_3__serial_jtag.bin"
+        },
+        "min_flash_size": 8,
+        "min_psram_size": 8,
+        "nvs_info": {
+          "start_addr": "0x9000",
+          "size": "0x6000"
+        }
+      }
+    }
+  }
+}
