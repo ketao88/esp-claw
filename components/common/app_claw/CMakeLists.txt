@@ -16,5 +16,5 @@ idf_component_register(
         "include"
     REQUIRES
         cap_status_indicator
-        cap_hid_keyboard
+        # cap_hid_keyboard temporarily disabled (needs espressif/esp_tinyusb)
 )
