@@ -36,13 +36,15 @@ jobs:
           fetch-depth: 1
 
       - name: Install ESP-IDF ${{ env.IDF_VERSION }}
-        uses: espressif/esp-idf-cmake-action@v1
-        with:
-          esp_idf_version: ${{ env.IDF_VERSION }}
-          target: esp32s3
+        run: |
+          git clone --depth 1 -b ${{ env.IDF_VERSION }} \
+            https://github.com/espressif/esp-idf.git $HOME/esp-idf
+          cd $HOME/esp-idf
+          ./install.sh esp32s3
 
       - name: Prepare board config
         run: |
+          . $HOME/esp-idf/export.sh
           idf.py -C application/edge_agent gen-bmgr-config \
             -c ./boards \
             -b ${{ matrix.board }}
@@ -51,6 +53,7 @@ jobs:
         env:
           CONFIG: ${{ matrix.board }}
         run: |
+          . $HOME/esp-idf/export.sh
           cd application/edge_agent
           idf.py build
 
