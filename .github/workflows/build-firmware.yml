@@ -1,0 +1,64 @@
+name: Build ESP-Claw Firmware
+
+on:
+  push:
+    branches: [master, custom-v5]
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+  release:
+    types: [published]
+
+env:
+  IDF_VERSION: v5.5.1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        board: [esp32_S3_DevKitC_1_breadboard]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Install ESP-IDF ${{ env.IDF_VERSION }}
+        uses: espressif/esp-idf-cmake-action@v1
+        with:
+          esp_idf_version: ${{ env.IDF_VERSION }}
+          target: esp32s3
+
+      - name: Prepare board config
+        run: |
+          idf.py -C application/edge_agent gen-bmgr-config \
+            -c ./boards \
+            -b ${{ matrix.board }}
+
+      - name: Build firmware
+        env:
+          CONFIG: ${{ matrix.board }}
+        run: |
+          cd application/edge_agent
+          idf.py build
+
+      - name: Extract combined binary
+        run: |
+          mkdir -p artifacts
+          cp application/edge_agent/build/firmware_full.bin artifacts/
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: esp-claw-firmware-${{ matrix.board }}
+          path: artifacts/
+          retention-days: 30
+
+      - name: Attach to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/firmware_full.bin
