@@ -34,7 +34,6 @@
 #endif
 #if CONFIG_APP_CLAW_CAP_TIME
 #include "cap_time.h"
-#include "cap_hid_keyboard.h"
 #include "cap_status_indicator.h"
 
 /* Wrapper for on_request_start that chains memory + status indicator */
@@ -328,12 +327,6 @@ esp_err_t app_claw_start(const app_claw_config_t *config,
     esp_err_t ind_err = cap_status_indicator_init();
     if (ind_err != ESP_OK) {
         ESP_LOGW(TAG, "Status indicator init skipped: %s", esp_err_to_name(ind_err));
-    }
-
-    /* Start USB HID keyboard (TinyUSB, uses USB OTG PHY GPIO 19/20) */
-    esp_err_t hid_err = cap_hid_keyboard_init();
-    if (hid_err != ESP_OK) {
-        ESP_LOGW(TAG, "HID keyboard init skipped: %s", esp_err_to_name(hid_err));
     }
 
     ESP_RETURN_ON_ERROR(app_claw_publish_startup_event(), TAG,
