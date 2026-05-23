@@ -44,8 +44,9 @@ dependencies:
   cap_status_indicator:
     path: ../../../components/claw_modules/cap_status_indicator
 
-  cap_hid_keyboard:
-    path: ../../../components/claw_modules/cap_hid_keyboard
+  # cap_hid_keyboard temporarily disabled (needs espressif/esp_tinyusb from registry)
+  # cap_hid_keyboard:
+  #   path: ../../../components/claw_modules/cap_hid_keyboard
 
   settings:
     path: ../../../components/common/settings
