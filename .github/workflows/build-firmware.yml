@@ -12,7 +12,6 @@ on:
 
 env:
   IDF_VERSION: v5.5.1
-  IDF_TOOLS_PATH: /opt/esp
   BOARD: esp32_S3_DevKitC_1_breadboard
 
 jobs:
@@ -33,11 +32,12 @@ jobs:
           bash install.sh esp32s3
           echo "$PWD" >> $GITHUB_PATH
 
-      - name: Build
+      - name: Generate board config & Build
         run: |
           source esp-idf/export.sh
           export CONFIG=${{ env.BOARD }}
           cd application/edge_agent
+          idf.py gen-bmgr-config -b ${{ env.BOARD }}
           idf.py build
 
       - name: Upload artifact
