@@ -27,24 +27,40 @@ jobs:
 
       - name: Install ESP-IDF
         run: |
-          git clone --depth 1 -b v5.5.1 https://github.com/espressif/esp-idf.git
+          git clone --depth 1 -b ${{ env.IDF_VERSION }} https://github.com/espressif/esp-idf.git
           cd esp-idf
           bash install.sh esp32s3
           echo "$PWD" >> $GITHUB_PATH
 
       - name: Build firmware
         run: |
-          source esp-idf/export.sh
+          . esp-idf/export.sh
           export CONFIG=${{ env.BOARD }}
           cd application/edge_agent
-          idf.py build
+          idf.py build 2>&1 || { cat build/log/*.log 2>/dev/null; exit 1; }
 
-      - name: Upload artifact
+      - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
         with:
           name: esp-claw-firmware
           path: application/edge_agent/build/firmware_full.bin
           retention-days: 30
+
+      - name: Upload build logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: application/edge_agent/build/log/
+          retention-days: 7
+
+      - name: Upload managed_components (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: managed-components
+          path: application/edge_agent/managed_components/
+          retention-days: 7
 
       - name: Attach to release
         if: github.event_name == 'release'
