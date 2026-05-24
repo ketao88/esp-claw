@@ -41,6 +41,7 @@ jobs:
 
       - name: Create single-file firmware
         run: |
+          . esp-idf/export.sh
           cd application/edge_agent
           esptool.py --chip esp32s3 merge_bin -o build/firmware_full.bin \
             --flash_mode dio --flash_freq 80m --flash_size 8MB \
