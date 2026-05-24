@@ -9,22 +9,15 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-    inputs:
-      board:
-        description: 'Target board name'
-        required: true
-        default: 'esp32_S3_DevKitC_1_breadboard'
-        type: choice
-        options:
-          - esp32_S3_DevKitC_1_breadboard
 
 env:
   IDF_VERSION: v5.5.1
-  CONFIG: esp32_S3_DevKitC_1_breadboard
+  IDF_TOOLS_PATH: /opt/esp
+  BOARD: esp32_S3_DevKitC_1_breadboard
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -33,29 +26,29 @@ jobs:
           submodules: recursive
           fetch-depth: 1
 
-      - name: Build firmware
+      - name: Install ESP-IDF
         run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/workspace \
-            -w /workspace/application/edge_agent \
-            -e CONFIG=esp32_S3_DevKitC_1_breadboard \
-            espressif/idf:${{ env.IDF_VERSION }} \
-            idf.py build
+          git clone --depth 1 -b v5.5.1 https://github.com/espressif/esp-idf.git
+          cd esp-idf
+          bash install.sh esp32s3
+          echo "$PWD" >> $GITHUB_PATH
 
-      - name: Extract combined binary
+      - name: Build
         run: |
-          mkdir -p artifacts
-          cp application/edge_agent/build/firmware_full.bin artifacts/
+          source esp-idf/export.sh
+          export CONFIG=${{ env.BOARD }}
+          cd application/edge_agent
+          idf.py build
 
-      - name: Upload firmware artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: esp-claw-firmware-${{ env.CONFIG }}
-          path: artifacts/
+          name: esp-claw-firmware
+          path: application/edge_agent/build/firmware_full.bin
           retention-days: 30
 
       - name: Attach to release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/firmware_full.bin
+          files: application/edge_agent/build/firmware_full.bin
