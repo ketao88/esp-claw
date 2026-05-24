@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  IDF_VERSION: v5.5.1
+  IDF_VERSION: v5.5.4
   BOARD: esp32_S3_DevKitC_1_breadboard
 
 jobs:
