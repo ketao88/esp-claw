@@ -192,27 +192,6 @@ If this project helps you, please consider giving it a star. ⭐⭐⭐⭐⭐
   </a>
 </div>
 
-## 🦞 ketao88 定制改动
-
-基于上游 [espressif/esp-claw](https://github.com/espressif/esp-claw) 的定制修改，适配 `esp32_S3_DevKitC_1_breadboard` 硬件。
-
-### 改动内容
-
-| # | 改动 | 说明 |
-|---|------|------|
-| 1 | 🔧 修复 WiFi 连接超时 | 解决一直等待连接的问题，配置正确后自动连接 |
-| 2 | 💡 WS2812 状态指示 (GPIO 48) | 红色闪烁 = 等待网络 / 绿色 = WiFi已连接 / 紫色慢闪 = 连接大模型中 |
-| 3 | ⚡ 优化 Token 参数 | 降低 token 消耗，减少延迟 |
-| 4 | 🧹 移除 cap_hid_keyboard 依赖 | 缺 esp_tinyusb 组件，临时禁用 |
-| 5 | 🧠 修复 IRAM 溢出 | 启用 SRAM1 作为 IRAM（+32KB） |
-| 6 | 📦 CI 生成单文件固件 | 自动合并 `firmware_full.bin`，支持网页直刷 |
-
-### 下载固件
-
-CI 构建完成后，从 [Actions](https://github.com/ketao88/esp-claw/actions) 页面下载 `esp-claw-firmware.zip`，解压得到 `firmware_full.bin`。
-
----
-
 ## Acknowledgements
 
 Inspired by [OpenClaw](https://github.com/openclaw/openclaw).
