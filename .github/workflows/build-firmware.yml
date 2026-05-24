@@ -39,6 +39,17 @@ jobs:
           cd application/edge_agent
           idf.py build 2>&1 || { cat build/log/*.log 2>/dev/null; exit 1; }
 
+      - name: Create single-file firmware
+        run: |
+          cd application/edge_agent
+          esptool.py --chip esp32s3 merge_bin -o build/firmware_full.bin \
+            --flash_mode dio --flash_freq 80m --flash_size 8MB \
+            0x1000 build/bootloader/bootloader.bin \
+            0x9000 build/partition_table/partition-table.bin \
+            0x10000 build/ota_data_initial.bin \
+            0x20000 build/edge_agent.bin \
+            0x620000 build/storage.bin
+
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
         with:
