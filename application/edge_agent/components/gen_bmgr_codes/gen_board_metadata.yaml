@@ -1,0 +1,20 @@
+version: 1
+board: esp32_S3_DevKitC_1
+chip: esp32s3
+
+devices:
+  led_strip:
+    type: custom
+    peripherals:
+    - rmt_tx
+    dependencies:
+      espressif/led_strip:
+        version: ^3.0
+        public: true
+
+peripherals:
+  rmt_tx:
+    type: rmt
+    role: tx
+    io:
+      gpio_num: 38

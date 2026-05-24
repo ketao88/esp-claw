@@ -32,12 +32,11 @@ jobs:
           bash install.sh esp32s3
           echo "$PWD" >> $GITHUB_PATH
 
-      - name: Generate board config & Build
+      - name: Build firmware
         run: |
           source esp-idf/export.sh
           export CONFIG=${{ env.BOARD }}
           cd application/edge_agent
-          idf.py gen-bmgr-config -b ${{ env.BOARD }}
           idf.py build
 
       - name: Upload artifact
